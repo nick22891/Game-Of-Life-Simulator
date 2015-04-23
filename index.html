@@ -60,7 +60,7 @@ function BlockGrid (w, h) {
     
     	var alive = false;//sets state to dead until life can be determined
     
-    	if (row >= 0 && row < this.height && col <= this.width && col >= 0) { //check that this square is not off the map
+    	if (row >= 0 && row < this.height && col < this.width && col >= 0) { //check that this square is not off the map
     	
     		alive = this.grid[row][col];
     	
@@ -131,6 +131,10 @@ grid.toggle(2,3); //now these three toggles will create horizontal line
 alert(grid.output()); //outputs the state of the grid (temporary until I set up the proper visual display)
 
 grid.run();//the horizontal line will switch to vertical after run() is executed (which means so far so good) - time for another nap ^.^
+
+alert(grid.output());
+
+grid.run();//the vertical line will switch back to horizontal after run() is executed (which means so far so good) - time for another nap ^.^
 
 alert(grid.output());
 
