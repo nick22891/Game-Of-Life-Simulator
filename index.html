@@ -1,0 +1,70 @@
+<html>
+
+<head>
+
+<title>JS Object Test</title>
+
+</head>
+
+<body>
+
+<script>
+
+function BlockGrid (w, h) {
+
+	this.width = w;
+	
+	this.height = h;
+	
+	this.grid = new Array();
+	
+	for (var row = 0; row < this.height;row++) { //initializes an array for each row based on the height given
+	
+		this.grid[row] = [];
+		
+		for (var col = 0; col < this.width;col++) { //sets the column index for each row based on the width given
+		
+			this.grid[row][col] = false; //every grid square defaults to false
+		
+		}
+		
+	} 
+	
+    this.toggle = function(row, col) {
+        this.grid[row][col] = !this.grid[row][col];//this switches the state of the square passed into the function
+    }
+    
+    this.output = function() {//this lets me use an alert box for the time being to crudely show the contents of my grid
+    
+    	var outputtext = "";
+    
+    	for (var row = 0; row < this.height;row++) {
+		
+			for (var col = 0; col < this.width;col++) {
+		
+				outputtext += this.grid[row][col] + " ";
+		
+			}
+			
+			outputtext += "\n";//line break after each row
+		
+		} 
+		
+		return outputtext;//passes the string back to the alert function
+    
+    }
+
+}
+
+var grid = new BlockGrid(2, 2); //create a test 2 x 2 grid
+
+grid.toggle(0,1); //flip the 2nd column of the first row from false to true
+
+alert(grid.output()); //outputs the state of the grid (temporary until I set up the proper visual display)
+
+</script>
+
+</body>
+
+</html>
+
