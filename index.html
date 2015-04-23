@@ -2,7 +2,7 @@
 
 <head>
 
-<title>JS Object Test</title>
+<title>Game of Life</title>
 
 </head>
 
@@ -16,7 +16,9 @@ function BlockGrid (w, h) {
 	
 	this.height = h;
 	
-	this.grid = new Array();
+	this.grid = new Array();//this stores the current state of the game board
+	
+	this.bufferGrid = new Array();//this will temporarily store the state of each new iteration
 	
 	for (var row = 0; row < this.height;row++) { //initializes an array for each row based on the height given
 	
@@ -53,14 +55,84 @@ function BlockGrid (w, h) {
 		return outputtext;//passes the string back to the alert function
     
     }
+    
+    this.checkIfSquareIsAlive = function (row, col) {
+    
+    	var alive = false;//sets state to dead until life can be determined
+    
+    	if (row >= 0 && row < this.height && col <= this.width && col >= 0) { //check that this square is not off the map
+    	
+    		alive = this.grid[row][col];
+    	
+    	}
+    	
+    	return alive;
+    
+    }
+    
+    this.run = function () {
+    
+    	for (var row = 0; row < this.height;row++) { //initializes an array for each row based on the height given
+	
+			this.bufferGrid[row] = [];
+		
+			for (var col = 0; col < this.width;col++) { //sets the column index for each row based on the width given
+			
+				var liveAdjacentSquares = 0;//Will accumulate the number of live adjacent squares
+				
+				for (var r = row-1; r <= row+1; r++) {//this little bit of sorcery will scan the 3x3 grid surrounding the square
+				
+					for (var c = col-1; c <= col+1;c++) {//hopefully this isn't too confusing - it starts at the top left and scans each row
+				
+						if (row != r || col != c) {//quickly check that we're not counting the square we're on since right now we only want the 8 surrounding cells
+						
+							if (this.checkIfSquareIsAlive(r, c)) liveAdjacentSquares++;
+						
+						}
+				
+					}
+				
+				}
+				
+				if (this.grid[row][col]) {//if this square is alive
+				
+					if (liveAdjacentSquares < 2 || liveAdjacentSquares > 3) this.bufferGrid[row][col] = false;//this square dies
+					
+					else this.bufferGrid[row][col] = true;//this square lives
+				
+				}
+				
+				else {//if this square is dead
+				
+					if (liveAdjacentSquares == 3) this.bufferGrid[row][col] = true;//this square becomes a live cell
+					
+					else this.bufferGrid[row][col] = false;//it stays dead
+				
+				}
+		
+			}
+		
+		} 
+  
+  		this.grid = this.bufferGrid.slice();
+  
+    }
 
 }
 
-var grid = new BlockGrid(2, 2); //create a test 2 x 2 grid
+var grid = new BlockGrid(5, 5); //create a test 2 x 2 grid
 
-grid.toggle(0,1); //flip the 2nd column of the first row from false to true
+grid.toggle(2,1);//
+
+grid.toggle(2,2);//
+
+grid.toggle(2,3); //now these three toggles will create horizontal line 
 
 alert(grid.output()); //outputs the state of the grid (temporary until I set up the proper visual display)
+
+grid.run();//the horizontal line will switch to vertical after run() is executed (which means so far so good) - time for another nap ^.^
+
+alert(grid.output());
 
 </script>
 
