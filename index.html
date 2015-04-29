@@ -4,11 +4,45 @@
 
 <title>Game of Life</title>
 
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+
 </head>
 
-<body>
+<body style="margin:0;">
+
+<canvas id="gameboard" width="400" height="400" style="border:1px solid #000000;padding:0;margin:0;">
+
+</canvas>
+
+<h2>Game of Life Simulation</h2> Developed By : Nicholas Williams<br>
+
+<br>
+
+<button onclick="startGame()">Start Game</button>&nbsp;&nbsp;
+
+<button onclick="stopGame()">Stop Game</button>&nbsp;&nbsp;
+
+<span id="iteration_counter">Iterations : 0</span>
+
+<br><br>
+
+1) Click anywhere on the map to start adding boxes to the grid.<br><br>
+
+2) Each click toggles the box between life and death! (i.e. makes a box appear or disappear)<br><br>
+
+3) When you're ready, hit "Start Game!".<br><br>
+
+4) It's a good idea to stop the game before making any changes to the map.<br><br>
 
 <script>
+
+var counter = 0;//number of times the game has iterated
+
+var c = document.getElementById("gameboard");
+
+var ctx = c.getContext("2d");
+
+ctx.fillStyle = "#FFCCCC";
 
 function BlockGrid (w, h) {
 
@@ -33,26 +67,22 @@ function BlockGrid (w, h) {
 	} 
 	
     this.toggle = function(row, col) {
-        this.grid[row][col] = !this.grid[row][col];//this switches the state of the square passed into the function
+        this.grid[row][col] = !this.grid[row][col];//this switches the state of the square passed into the function based on the row and column
     }
     
-    this.output = function() {//this lets me use an alert box for the time being to crudely show the contents of my grid
-    
-    	var outputtext = "";
+    this.output = function() {//this function lets me draw all the living boxes by traversing the matrix
+
+		ctx.clearRect(0,0,c.width, c.height);
     
     	for (var row = 0; row < this.height;row++) {
 		
 			for (var col = 0; col < this.width;col++) {
-		
-				outputtext += this.grid[row][col] + " ";
+
+				if (this.grid[row][col]) renderBoard(row, col);//draw the box for this location on the grid
 		
 			}
-			
-			outputtext += "\n";//line break after each row
 		
 		} 
-		
-		return outputtext;//passes the string back to the alert function
     
     }
     
@@ -120,27 +150,53 @@ function BlockGrid (w, h) {
 
 }
 
-var grid = new BlockGrid(5, 5); //create a test 2 x 2 grid
+var grid = new BlockGrid(20, 20); //create a 20 x 20 grid
 
-grid.toggle(2,1);//
+grid.output();//render the grid
 
-grid.toggle(2,2);//
+c.addEventListener('click', function(evt) {//this listens for mouseclicks on the grid and toggles the boxes accordingly by calculating the relevant row and column
+        var row_selected = Math.floor(evt.clientY / 20);
+        var col_selected = Math.floor(evt.clientX / 20);
+        grid.toggle(col_selected, row_selected);
+        grid.output();
+      }, false);
 
-grid.toggle(2,3); //now these three toggles will create horizontal line 
+var gameloop = null;//creating a variable for the game loop
 
-alert(grid.output()); //outputs the state of the grid (temporary until I set up the proper visual display)
+function startGame () {
 
-grid.run();//the horizontal line will switch to vertical after run() is executed (which means so far so good) - time for another nap ^.^
+	gameloop = setInterval(function () {
 
-alert(grid.output());
+		grid.output();
 
-grid.run();//the vertical line will switch back to horizontal after run() is executed (which means so far so good) - time for another nap ^.^
+		grid.run();
 
-alert(grid.output());
+		counter++;
+
+		$("#iteration_counter").text("Iterations : " + counter);
+
+	}, 500);//the game processes an iteration every 0.5 seconds
+
+}
+
+function stopGame () {
+
+	clearInterval(gameloop);//stops the game loop
+
+}
+
+function renderBoard (row, col) {//this function is called by the BlockGrid class to draw each living box
+
+	var startX = row * 20;
+
+	var startY = col * 20;
+
+	ctx.fillRect(startX,startY,19,19);
+
+}
 
 </script>
 
 </body>
 
 </html>
-
