@@ -22,6 +22,8 @@
 
 <button onclick="stopGame()">Stop Game</button>&nbsp;&nbsp;
 
+<button onclick="toggleGridFunction()">Toggle Gridlines</button>&nbsp;&nbsp;
+
 <span id="iteration_counter">Iterations : 0</span>
 
 <br><br>
@@ -39,6 +41,8 @@ N.B. <a target="_blank" href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life
 <script>
 
 var counter = 0;//number of times the game has iterated
+
+var gridToggle = true;
 
 var c = document.getElementById("gameboard");
 
@@ -82,7 +86,7 @@ function BlockGrid (w, h) {
 
 				if (this.grid[row][col]) drawLivingBox(row, col);//draw the box for this location on the grid
 
-				drawEmptyBox(row,col);//draws a gray square outline in each slot to keep a complete gray grid on the game board. The lines could be drawn more efficiently if the size of the board was to remain constant but I want to keep the ability to adjust the size by simply editing the array size and the canvas size.
+				if (gridToggle) drawEmptyBox(row,col);//draws a gray square outline in each slot to keep a complete gray grid on the game board. The lines could be drawn more efficiently if the size of the board was to remain constant but I want to keep the ability to adjust the size by simply editing the array size and the canvas size.
 
 			}
 		
@@ -212,6 +216,14 @@ function drawEmptyBox (row,col) {//used to maintain the grid layout with a gray 
 	ctx.fillStyle = "101010";
 
 	ctx.strokeRect(startX,startY,20,20);
+
+}
+
+function toggleGridFunction () {
+
+	gridToggle = !gridToggle;
+
+	grid.output();
 
 }
 
