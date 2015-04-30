@@ -14,7 +14,7 @@
 
 </canvas>
 
-<h2>Game of Life Simulation</h2> Developed By : Nicholas Williams<br>
+<h2>Game of Life Simulation</h2> Developed By : Nick Williams <span style="color:#101010;"> - (Scroll down for instructions)</span><br>
 
 <br>
 
@@ -26,9 +26,11 @@
 
 <br><br>
 
+N.B. <a target="_blank" href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">This wikipedia page</a> explains the game concept better than I can.<br><br>
+
 1) Click anywhere on the map to start adding boxes to the grid.<br><br>
 
-2) Each click toggles the box between life and death! (i.e. makes a box appear or disappear)<br><br>
+2) Each click toggles the box between life and death (i.e. makes a box appear or disappear)<br><br>
 
 3) When you're ready, hit "Start Game!".<br><br>
 
@@ -78,8 +80,10 @@ function BlockGrid (w, h) {
 		
 			for (var col = 0; col < this.width;col++) {
 
-				if (this.grid[row][col]) renderBoard(row, col);//draw the box for this location on the grid
-		
+				if (this.grid[row][col]) drawLivingBox(row, col);//draw the box for this location on the grid
+
+				drawEmptyBox(row,col);//draws a gray square outline in each slot to keep a complete gray grid on the game board. The lines could be drawn more efficiently if the size of the board was to remain constant but I want to keep the ability to adjust the size by simply editing the array size and the canvas size.
+
 			}
 		
 		} 
@@ -185,13 +189,29 @@ function stopGame () {
 
 }
 
-function renderBoard (row, col) {//this function is called by the BlockGrid class to draw each living box
+function drawLivingBox (row, col) {//this function is called by the BlockGrid class to draw each living box
 
 	var startX = row * 20;
 
 	var startY = col * 20;
 
+	ctx.fillStyle = "#FFCCCC";
+
 	ctx.fillRect(startX,startY,19,19);
+
+}
+
+function drawEmptyBox (row,col) {//used to maintain the grid layout with a gray outline for each square
+
+	var startX = row * 20;
+
+	var startY = col * 20;
+
+	ctx.lineWidth=0.5;
+
+	ctx.fillStyle = "101010";
+
+	ctx.strokeRect(startX,startY,20,20);
 
 }
 
