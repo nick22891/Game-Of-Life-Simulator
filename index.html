@@ -10,7 +10,7 @@
 
 <body style="margin:0;">
 
-<canvas id="gameboard" width="400" height="400" style="border:1px solid #000000;padding:0;margin:0;">
+<canvas id="gameboard" width="800" height="600" style="border:1px solid #000000;padding:0;margin:0;">
 
 </canvas>
 
@@ -150,7 +150,7 @@ function BlockGrid (w, h) {
 
 }
 
-var grid = new BlockGrid(20, 20); //create a 20 x 20 grid
+var grid = new BlockGrid(30, 40); //create a 20 x 20 grid
 
 grid.output();//render the grid
 
@@ -175,7 +175,7 @@ function startGame () {
 
 		$("#iteration_counter").text("Iterations : " + counter);
 
-	}, 500);//the game processes an iteration every 0.5 seconds
+	}, 250);//the game processes an iteration every 0.5 seconds
 
 }
 
